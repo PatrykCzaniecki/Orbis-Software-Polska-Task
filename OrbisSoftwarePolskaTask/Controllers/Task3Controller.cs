@@ -10,18 +10,20 @@ namespace OrbisSoftwarePolskaTask.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class Task1Controller : ControllerBase
+    public class Task3Controller : ControllerBase
     {
-        private readonly ILogger<Task1Controller> _logger;
+        private readonly ILogger<Task3Controller> _logger;
 
-        public Task1Controller(ILogger<Task1Controller> logger)
+        public Task3Controller(ILogger<Task3Controller> logger)
         {
             _logger = logger;
         }
 
-        [HttpPut]
-        public async Task<IActionResult> SetOrderFields([FromBody] BaselinkerOrderTask1 baselinkerOrderTask1)
+        [HttpPost]
+        public async Task<IActionResult> AddOrderInvoiceFile(int invoiceId, string externalInvoiceNumber, string filePath)
         {
+            var fileToSend = "data:" + (new ExtensionMethods.ExtensionMethods().CharReplacement(await System.IO.File.ReadAllTextAsync(filePath)));
+            var baselinkerOrderTask = new BaselinkerOrderTask3(invoiceId, fileToSend, externalInvoiceNumber);
             var restClient = new RestClient("https://api.baselinker.com/connector.php");
             var attemptsCounter = 0;
             while (attemptsCounter < 3)
@@ -30,7 +32,7 @@ namespace OrbisSoftwarePolskaTask.Controllers
                 {
                     var response =
                         await restClient.PostAsync(
-                            new ExtensionMethods.ExtensionMethods().CreateRequest("setOrderFields", baselinkerOrderTask1));
+                            new ExtensionMethods.ExtensionMethods().CreateRequest("addOrderInvoiceFile", baselinkerOrderTask));
 
                     if (response.StatusCode is HttpStatusCode.InternalServerError or HttpStatusCode.RequestTimeout)
                     {

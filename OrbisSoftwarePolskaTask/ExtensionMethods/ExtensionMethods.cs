@@ -17,5 +17,11 @@ namespace OrbisSoftwarePolskaTask.ExtensionMethods
             request.AddParameter("parameter", JsonSerializer.Serialize(parameter));
             return request;
         }
+
+        public string CharReplacement(string inputValue)
+        {
+            var newString = inputValue.Replace("+", "%2B");
+            return newString;
+        }
     }
 }
