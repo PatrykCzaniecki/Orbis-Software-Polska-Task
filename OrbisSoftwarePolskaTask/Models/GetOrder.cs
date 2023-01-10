@@ -1,12 +1,11 @@
-﻿namespace OrbisSoftwarePolskaTask.Models
-{
-    public class GetOrder
-    {
-        public int Id { get; set; }
+﻿namespace OrbisSoftwarePolskaTask.Models;
 
-        public GetOrder(int id)
-        {
-            Id = id;
-        }
+public class GetOrder
+{
+    public GetOrder(int id)
+    {
+        Id = id;
     }
+
+    public int Id { get; set; }
 }
